@@ -1,0 +1,22 @@
+# pyproject.toml
+
+[tool.mypy]
+# --- Core Strictness Options for Function Definitions ---
+# Report an error for function definitions that are missing type annotations.
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+# --- Import Handling ---
+ignore_missing_imports = true
+follow_imports = "silent"
+
+# --- Recommended Additional Strictness Options ---
+warn_redundant_casts = true
+warn_unused_ignores = true
+no_implicit_optional = true
+warn_return_any = true
+implicit_reexport = false
+
+# --- Paths to Include/Exclude (Optional, MyPy usually finds them) ---
+files = ["./src/*.py"]
+exclude = ["./venv/"]

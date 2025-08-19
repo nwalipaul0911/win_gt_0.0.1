@@ -1,0 +1,9 @@
+2025-08-11 09:31:52,158 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0
+2025-08-11 10:08:40,252 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0
+2025-08-11 10:12:10,726 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0
+2025-08-11 10:42:23,594 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0
+2025-08-11 10:45:30,318 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0
+2025-08-11 10:53:33,623 - INFO - google_auth_oauthlib.flow - line 476 - "GET /?state=U1nB9WIyJ6uM1OmTpdyAsGtlchi74w&code=4/0AVMBsJikd3wDfoQRiOS_q8xrjgMsc-fMnNR5N5BIXulE0vgf9ZVMYHtdXjAEJmjyojE-Rg&scope=https://www.googleapis.com/auth/calendar.readonly HTTP/1.1" 200 65
+2025-08-11 10:53:34,177 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0
+2025-08-11 10:57:00,997 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0
+2025-08-11 11:21:17,481 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0

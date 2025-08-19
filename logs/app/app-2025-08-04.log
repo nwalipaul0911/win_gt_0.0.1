@@ -1,0 +1,2 @@
+2025-08-04 23:58:42,522 - INFO - google_auth_oauthlib.flow - line 476 - "GET /?state=TWlQrkrGY3YSaW5f9Bxr8h03m7mfl9&code=4/0AVMBsJg_Z_We9BMilD5PCCN9qHl2Sg7sdwSkopDNSroy23e3fagWbfGBBzs_Rup2FttX1Q&scope=https://www.googleapis.com/auth/calendar.readonly HTTP/1.1" 200 65
+2025-08-04 23:58:43,294 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0

@@ -1,0 +1,5 @@
+2025-08-03 16:07:15,396 - INFO - gazetime.session - line 622 - Session 'Unnamed session' started.
+Periods: [Period(name='Morning prayer', duration=15m), Period(name='Meeting', duration=1h)]
+
+2025-08-03 16:08:53,712 - INFO - gazetime.session - line 651 - Session 'Unnamed session': Stopped.
+---
