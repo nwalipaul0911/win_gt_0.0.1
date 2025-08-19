@@ -1,134 +1,108 @@
-# GazeTime 👁️⌨️
+# **Win GT** – Productivity App with Distraction Lock & Smart Scheduling
 
-**GazeTime** is a productivity-focused, Windows-only CLI application that uses your webcam to detect whether you're looking at the screen. It blocks keystrokes in specific applications if you're distracted, encourages screen focus, and tracks your focus sessions.
+Win GT is a **Windows-only productivity tool** designed to help you stay focused by **locking the keyboard for pre-selected distracting applications** and **optimizing your work periods** based on your Google Calendar events.
 
----
-
-## ⚙️ Features
-
-* ✅ Real-time gaze detection using webcam
-* ⏱️ Customizable focus session durations
-* 🔔 Notifications before session ends
-* 🚫 Blocks keyboard input in selected apps when you're not looking
-* 📝 Logs completed sessions to a file (`session_log.txt`)
-* 🪟 Designed for Windows desktop environments
-* 💻 Runs via a lightweight command-line interface (CLI) with Administrative privileges
+It combines distraction control with intelligent scheduling, ensuring your workflow adapts dynamically to upcoming tasks and meetings.
 
 ---
 
-## 📸 Demo
+## **Features**
 
-> Coming soon.
+### 🔒 Distraction App Keyboard Lock
 
----
+* Select applications that often cause distractions (e.g., games, social media, entertainment).
+* When these apps are active, Win GT locks your keyboard input, preventing unproductive activity.
+* Runs quietly in the background with minimal system impact.
 
-## 🛠️ Installation
+### 📅 Google Calendar Integration
 
-### 1. Clone the repository
+* Connects to your Google Calendar via the **Calendar API**.
+* Fetches upcoming events automatically in real-time.
+* Uses event data to adjust your productivity periods dynamically.
 
-```bash
-git clone https://github.com/nwalipaul0911/gazetime.git
-cd gaze_lock
-```
+### ⏱ Live Period Ordering for Optimal Productivity
 
-### 2. (Optional) Create a virtual environment
-
-```bash
-python -m venv venv
-venv\Scripts\activate
-```
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
+* Automatically **orders work periods** based on how soon scheduled events will occur.
+* Dynamically re-prioritizes tasks when calendar updates happen.
+* Ensures you focus on what matters most **before important events**.
 
 ---
 
-## ▶️ Usage
+## **How It Works**
 
-### Step 1: Configure `config.json`
+1. **Select Your Distraction Apps**
+   Choose programs that you want the system to monitor and block keyboard input for when they are in focus.
 
-Customize your session with:
+2. **Authorize Google Calendar Access**
+   Log in to your Google account to grant permission for reading your calendar events.
 
-```json
-{
-  "focus_apps": ["notepad.exe", "chrome.exe"],
-  "session_duration": 1800,
-  "warn_before": 60,
-  "keyboard_lock": true
-}
-```
+3. **Dynamic Period Scheduling**
+   The app monitors your calendar and reorders your work periods automatically as event times approach.
 
-* `focus_apps`: List of Windows processes to monitor
-* `session_duration`: Focus time in seconds (e.g., 1800 = 30 minutes)
-* `warn_before`: When to notify before session ends (seconds)
-* `keyboard_lock`: Whether to block input when you're not looking
-
-### Step 2: Run the app
-
-```bash
-py main.py
-```
-
-You will be prompted after each session to either **continue (Y)** or **quit (N)**.
-
-> 💡 Run from a terminal with **administrator privileges** for keyboard blocking to work properly.
+4. **Background Operation**
+   Win GT works silently in the background, giving you focus without interruptions.
 
 ---
 
-## 📋 Requirements
+## **Installation**
 
-* Windows OS
+### Requirements
+
+* Windows 10 or later
 * Python 3.9+
-* Webcam
+* Google API credentials (for Calendar access)
+
+### Steps
+
+1. Clone this repository:
+
+   ```bash
+   git clone https://github.com/<your-username>/win_gt.git
+   cd win_gt
+   ```
+2. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Set up your Google Calendar API credentials:
+
+   * Create a Google Cloud project.
+   * Enable the Calendar API.
+   * Download `credentials.json` into the project root.
+4. Run the app:
+
+   ```bash
+   python main.py
+   ```
 
 ---
 
-## 📦 Dependencies
+## **Configuration**
 
-* `keyboard`
-* `opencv-python`
-* `plyer` (for notifications)
-* `pywin32` (for detecting the active window)
-
-All dependencies are listed in `requirements.txt`.
+* **Distraction Apps**: Add application names to the configuration file (e.g., `config.json`).
+* **Calendar Sync Interval**: Configure how often the app fetches new events.
+* **Period Length**: Adjust productivity period durations.
 
 ---
 
-## 🧪 Example Log
+## **Example Use Case**
 
-After each completed session, a log entry is added to `session_log.txt`:
-
-```
-[2025-05-24 15:23:10] Focus session completed (duration: 1800 seconds)
-```
-
----
-
-## 🚧 Limitations
-
-* Only tested on Windows
-* Webcam must be enabled and uncovered
-* Keyboard blocking may not work on system-protected apps
-* No built-in UI (CLI only)
+* You have a meeting in **30 minutes**.
+  Win GT detects the event from your calendar and **pushes all relevant prep tasks to the top of your period list**.
+* You accidentally open **YouTube**.
+  The app instantly **locks your keyboard** to prevent wasting time.
 
 ---
 
-## 🤝 Contributing
+## **Roadmap**
 
-This is a personal project, but contributions are welcome! Fork and submit a pull request.
-
----
-
-## 📄 License
-
-MIT License — see [LICENSE](https://github.com/nwalipaul0911/gaze_lock/blob/master/LICENSE) for details.
+* 📊 Productivity analytics and usage reports
+* 🖱 Mouse lock for distraction apps
+* 🔔 Smart notifications for upcoming periods and events
 
 ---
 
-## 🙋‍♂️ Author
+## **License**
 
-Built with focus 👁️⌨️ by **Nwali Paul**
-
+This project is licensed under the MIT License.
