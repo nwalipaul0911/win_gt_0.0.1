@@ -1,0 +1,6 @@
+2025-09-08 19:00:16,005 - INFO - gazetime.session - line 115 - Skipped event: Third task
+2025-09-08 19:43:28,457 - INFO - gazetime.session - line 115 - Skipped event: Third task
+2025-09-08 19:55:39,070 - WARNING - gazetime.session - line 133 - Current event is not running or not set.
+2025-09-08 19:55:40,220 - WARNING - gazetime.session - line 133 - Current event is not running or not set.
+2025-09-08 19:55:46,315 - INFO - gazetime.session - line 115 - Skipped event: Third task
+2025-09-08 20:53:24,743 - INFO - gazetime.session - line 119 - Skipped event: Last task

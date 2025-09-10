@@ -4,6 +4,7 @@ from utils import AppInspector, ConfigManager
 import time
 from typing import Any, Optional, Dict
 
+
 class KeystrokeBlocker:
     """
     A class that blocks all keystrokes globally on the system when activated.
@@ -20,7 +21,7 @@ class KeystrokeBlocker:
         self.listener = threading.Thread(target=self._listener, daemon=True)
         self.listener.start()  # Start the key listener thread
 
-    def _block_keys(self, event: Optional[keyboard.KeyboardEvent]=None) -> bool:
+    def _block_keys(self, event: Optional[keyboard.KeyboardEvent] = None) -> bool:
         """
         Internal method called for every key event. Determines whether the key should be blocked.
 
@@ -52,7 +53,6 @@ class KeystrokeBlocker:
         self.blocking = False
 
 
-
 class Focus:
     _instance = None
 
@@ -67,15 +67,12 @@ class Focus:
 
         self._initialized = True
         self.keyblocker = KeystrokeBlocker()
-        self.focus_apps : list[str] = []
+        self.focus_apps: list[str] = []
         self.enabled = False
         self._stop_event = threading.Event()
         self._thread: Optional[threading.Thread] = None
 
-        self.default : Dict[str, Any] = {
-            "apps": [],
-            "keyblocker": False
-        }
+        self.default: Dict[str, Any] = {"apps": [], "keyblocker": False}
 
         self.load()
 
@@ -86,13 +83,9 @@ class Focus:
 
     def save(self) -> None:
         """Save current config."""
-        ConfigManager.save_config({
-            "focus": {
-                "apps": self.focus_apps
-            }
-        })
+        ConfigManager.save_config({"focus": {"apps": self.focus_apps}})
 
-    def update_focus_apps(self, apps: list[str], overwrite: bool=False) -> None:
+    def update_focus_apps(self, apps: list[str], overwrite: bool = False) -> None:
         """Update the list of apps to focus on."""
         if overwrite:
             self.focus_apps = apps
@@ -101,7 +94,6 @@ class Focus:
                 if app not in self.focus_apps:
                     self.focus_apps.append(app)
         self.save()
-
 
     def turn_on(self) -> None:
         """Enable keystroke blocking when non-focus apps are active."""

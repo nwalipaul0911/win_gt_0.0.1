@@ -1,0 +1,7 @@
+2025-09-09 12:42:02,870 - INFO - gazetime.session - line 113 - Skipped event: First task
+2025-09-09 13:03:28,522 - WARNING - gazetime.session - line 35 - No calendar services available.
+2025-09-09 15:29:09,540 - ERROR - gazetime.session - line 66 - Error loading events from google service: Unable to find the server at www.googleapis.com
+2025-09-09 15:30:10,692 - ERROR - gazetime.session - line 66 - Error loading events from google service: Unable to find the server at www.googleapis.com
+2025-09-09 15:31:11,938 - ERROR - gazetime.session - line 66 - Error loading events from google service: Unable to find the server at www.googleapis.com
+2025-09-09 20:12:43,722 - INFO - gazetime.session - line 114 - Skipped event: Third task
+2025-09-09 20:14:12,035 - INFO - gazetime.session - line 114 - Skipped event: Third task

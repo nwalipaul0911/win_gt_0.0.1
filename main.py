@@ -1,11 +1,14 @@
 import customtkinter as ctk
 from PIL import ImageTk
 from logging_config import *
+import sys
 from utils import ConfigManager
 from utils import load_image
 from src.app_services.managers import ServiceManager
 from src.app_services.google_service import GoogleCalendarService
 from src.views.session import EventsView
+from src.coordinator import EventCoordinator
+from src.app_services.service_loader import ServiceLoader
 
 
 ServiceManager.register("google", "calendar", GoogleCalendarService)
@@ -18,10 +21,11 @@ class GazeTimeApp(ctk.CTk):
         self.resizable(False, False)
         image_data = load_image("app_icon.png", "icons")
         image = ImageTk.PhotoImage(image_data, size=(30, 30))
-        self.iconphoto(True, image)
+        self.iconphoto(True, image)  # type: ignore
         self.iconbitmap()
         self.service_manager = ServiceManager()
         self.first_launch = ConfigManager.get("first_time", default=True)
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
 
         if self.first_launch:
             ConfigManager.save_config(data={"first_time": False})
@@ -36,7 +40,10 @@ class GazeTimeApp(ctk.CTk):
 
         self.view_stack = []  # For navigation history
         self.current_view = None
-        self.show_content(EventsView, self.service_manager)
+        self.coordinator = EventCoordinator()
+        self.service_loader = ServiceLoader()
+        self.service_loader.set_coordinator(self.coordinator)
+        self.show_content(EventsView)
 
 
     def show_content(self, ViewClass, *args, **kwargs):
@@ -61,6 +68,11 @@ class GazeTimeApp(ctk.CTk):
             if hasattr(self.current_view, "refresh"):
                 self.current_view.refresh()
             self.current_view.tkraise()
+
+    def on_close(self):
+        self.service_loader.shutdown()
+        self.destroy()
+        sys.exit(0)
 
 
 if __name__ == "__main__":

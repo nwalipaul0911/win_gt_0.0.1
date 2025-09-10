@@ -18,5 +18,5 @@ warn_return_any = true
 implicit_reexport = false
 
 # --- Paths to Include/Exclude (Optional, MyPy usually finds them) ---
-files = ["./src/*.py"]
+files = ["./src"]
 exclude = ["./venv/"]

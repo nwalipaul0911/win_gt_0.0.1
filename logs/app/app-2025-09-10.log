@@ -1,0 +1,2 @@
+2025-09-10 10:37:01,949 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0
+2025-09-10 10:39:54,846 - INFO - googleapiclient.discovery_cache - line 49 - file_cache is only supported with oauth2client<4.0.0
