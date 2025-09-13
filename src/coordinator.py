@@ -7,7 +7,7 @@ import heapq
 import datetime
 
 
-class Coordinator:
+class Singleton_:
     _instance = None
     _lock = threading.Lock()
 
@@ -18,39 +18,33 @@ class Coordinator:
         return cls._instance
 
 
-@dataclass(order=True)
-class PrioritizedEvent:
-    priority: float
-    event: Event = field(compare=False)
-
-
-class EventCoordinator(Coordinator):
-    _loader_started = False
-    _loader_lock = threading.Lock()
-
-    def __init__(self, **kwargs: Any):
+class EventCoordinator(Singleton_):
+    def __init__(self):
         if getattr(self, "_initialized", False):
             return
-
+        self._initialized = True
         # shared state
         self._state_lock = threading.RLock()
         self._instances: Dict[str, Event] = {}
-        self._event_heap: List[PrioritizedEvent] = []
+        self._event_heap: List[Event] = []
         self.current_event: Optional[Event] = None
-        self._initialized = True
         self.ui_list = set()
 
-    # ---------- event state / heap ----------
     def add_event(self, event: "Event") -> None:
         with self._state_lock:
+            event.set_priority(self.calculate_priority(event))
             self._instances[event._id] = event
-            self._rebuild_heap(list(self._instances.values()))
+            self._event_heap.append(event)
+            self._rebuild_heap()
 
-    def remove_event(self, event: "Event") -> None:
+    def remove_event(self, _id: "str") -> None:
         with self._state_lock:
-            if event._id in self._instances:
-                del self._instances[event._id]
-            self._rebuild_heap(list(self._instances.values()))
+            if _id in self._instances:
+                event = self._instances.get(_id, None)
+                del self._instances[_id]
+                if self.current_event and event and event._id != self.current_event._id:
+                    self._event_heap.remove(event)
+            self._rebuild_heap()
 
     def check_state(self, event: Event):
         is_completed = event.is_completed
@@ -60,25 +54,18 @@ class EventCoordinator(Coordinator):
         )
         return is_completed or ended
 
-    def _rebuild_heap(self, events: List["Event"]) -> None:
+    def _rebuild_heap(self) -> None:
         with self._state_lock:
-            self._event_heap = [
-                PrioritizedEvent(self.event_priority(e), e)
-                for e in events
-                if not self.check_state(e)
-            ]
             heapq.heapify(self._event_heap)
 
-    def update_priorities(self) -> None:
-        self._rebuild_heap(list(self._instances.values()))
-
-    def event_priority(self, event: "Event") -> float:
+    def calculate_priority(self, event: "Event") -> float:
+        """
+        Calculates the priority of the event.
+        """
         now = datetime.datetime.now()
 
         if event.start_time:
             seconds_until_start = (event.start_time - now).total_seconds()
-            # events already started get highest priority \
-            # (negative time -> run now)
             return seconds_until_start
 
         # unscheduled: sooner-to-finish first
@@ -88,7 +75,7 @@ class EventCoordinator(Coordinator):
         return remaining
 
     def peek_next_event(self) -> Optional["Event"]:
-        return self._event_heap[0].event if self._event_heap else None
+        return self._event_heap[0] if self._event_heap else None
 
     def get_next_event(self) -> Optional["Event"]:
         next_event = self.peek_next_event()
@@ -105,16 +92,11 @@ class EventCoordinator(Coordinator):
         else:
             if self.current_event.is_running and self.current_event.is_scheduled:
                 return self.current_event
-            elif (
-                self._event_heap
-                and next_event
-                and next_event.is_scheduled
-                and next_event.is_due()
-            ):
+            elif next_event and next_event.is_due():
                 self.current_event.is_running = False
                 self.current_event = next_event
                 heapq.heappop(self._event_heap)
-        self._rebuild_heap([pe.event for pe in self._event_heap])
+        self._rebuild_heap()
         return self.current_event
 
     # ---------- controls ----------
@@ -125,7 +107,7 @@ class EventCoordinator(Coordinator):
         return self.get_next_event()
 
     def upcoming_list(self) -> List["Event"]:
-        return [pe.event for pe in self._event_heap]
+        return [event for event in self._event_heap]
 
     def completed_list(self) -> List["Event"]:
         completed = [e for e in self._instances.values() if self.check_state(e)]

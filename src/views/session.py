@@ -5,6 +5,7 @@ import datetime
 import time
 from src.event import Event
 from src.coordinator import EventCoordinator
+from tkinter import messagebox
 
 
 parser = TimeParser()
@@ -251,7 +252,11 @@ class EventQueue(ctk.CTkScrollableFrame):
         # clear existing children
         for widget in self.winfo_children():
             widget.destroy()
-
+        completed = (
+            (completed + [self.coordinator.current_event])
+            if self.coordinator.current_event
+            else completed
+        )
         events = completed + upcoming
         for i, event in enumerate(events):
             EventCard(self, event=event, index=i)
@@ -371,7 +376,7 @@ class EventsView(ctk.CTkFrame):
             self.controls_container,
             text="Start",
             fg_color="#007f44",
-            command=lambda *_: setattr(self.current_event, "is_running", True),
+            command=self.start_event,
         )
         self.start_button.grid(column=0, row=0, padx=5, pady=5, sticky="ew")
 
@@ -380,7 +385,7 @@ class EventsView(ctk.CTkFrame):
             text="Pause",
             fg_color="#C4B101",
             text_color="#747474",
-            command=lambda *_: setattr(self.current_event, "is_running", False),
+            command=self.stop_event,
         )
         self.pause_button.grid(column=1, row=0, padx=5, pady=5, sticky="ew")
 
@@ -421,6 +426,21 @@ class EventsView(ctk.CTkFrame):
         if next_event is not None:
             self.load_event(next_event)
         self.after(1000, self.refresh)
+
+    def start_event(self):
+        if not self.current_event:
+            messagebox.showinfo("Event", f"No event available")
+            return
+        due_state = self.current_event.is_due()
+        if not due_state:
+            messagebox.showinfo(
+                "Event",
+                f"The current event is scheduled at {self.current_event.start_time}",
+            )
+        setattr(self.current_event, "is_running", due_state)
+
+    def stop_event(self):
+        setattr(self.current_event, "is_running", False)
 
     def load_event(self, event: Event):
         if not isinstance(event, Event):

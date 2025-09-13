@@ -13,6 +13,7 @@ from src.app_services.service_loader import ServiceLoader
 
 ServiceManager.register("google", "calendar", GoogleCalendarService)
 
+
 class GazeTimeApp(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -23,7 +24,6 @@ class GazeTimeApp(ctk.CTk):
         image = ImageTk.PhotoImage(image_data, size=(30, 30))
         self.iconphoto(True, image)  # type: ignore
         self.iconbitmap()
-        self.service_manager = ServiceManager()
         self.first_launch = ConfigManager.get("first_time", default=True)
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
@@ -40,11 +40,11 @@ class GazeTimeApp(ctk.CTk):
 
         self.view_stack = []  # For navigation history
         self.current_view = None
+        self.service_manager = ServiceManager()
         self.coordinator = EventCoordinator()
         self.service_loader = ServiceLoader()
         self.service_loader.set_coordinator(self.coordinator)
         self.show_content(EventsView)
-
 
     def show_content(self, ViewClass, *args, **kwargs):
         if self.current_view:
@@ -54,7 +54,6 @@ class GazeTimeApp(ctk.CTk):
         self.current_view = ViewClass(self.content, self, *args, **kwargs)
         self.current_view.grid(column=0, row=0, sticky="nsew")
         self.current_view.tkraise()
-        
 
     def go_back(self):
         if self.view_stack:

@@ -24,6 +24,7 @@ class Event:
     is_scheduled: bool = False
     is_completed: bool = False
     focus: bool = False
+    priority: int | float = 0
 
     def __post_init__(self) -> None:
         if isinstance(self.start_time, datetime.datetime) and isinstance(
@@ -49,6 +50,10 @@ class Event:
         if not self.start_time:
             return True
         return self.start_time <= datetime.datetime.now()
+
+    def set_priority(self, priority):
+        self.priority = priority
+        return self
 
     def set_duration(self, duration: int) -> None:
         """
@@ -115,3 +120,6 @@ class Event:
             session_logger.info(f"Notification sent for event: {self.summary}")
         else:
             session_logger.warning("No summary provided for notification.")
+
+    def __lt__(self, other):
+        return self.priority < other.priority

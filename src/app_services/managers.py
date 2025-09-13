@@ -2,6 +2,7 @@ from .interfaces import Service
 from typing import Dict, Optional, Type, Any, List
 from abc import ABC, abstractmethod
 from utils import ConfigManager
+from src.coordinator import Singleton_
 
 
 class BaseServiceManager(ABC):
@@ -21,17 +22,12 @@ class BaseServiceManager(ABC):
     def get_service(cls, platform: str, service_name: str) -> Optional["Service"]: ...
 
 
-class ServiceManager(BaseServiceManager):
-    def __new__(cls) -> Any:
-        if not cls._singleton:
-            cls._singleton = super().__new__(cls)
-        return cls._singleton
-
+class ServiceManager(BaseServiceManager, Singleton_):
     def __init__(self) -> None:
-        if getattr(self, "_instantiated", False):
+        if getattr(self, "_initialized", False):
             return
-        self._instantiated = True
-        self._integrations: Dict[str, List[str]] = {}  # platform → service_name
+        self._initialized = True
+        self._integrations: Dict[str, List[str]] = {}
         self.load_integrations()
 
     @classmethod
@@ -76,10 +72,12 @@ class ServiceManager(BaseServiceManager):
     def integrate(self, platform: str, service_name: str) -> bool:
         platform, service_name = platform.lower(), service_name.lower()
         service = self.get_service(platform, service_name)
+
         if service and service.authenticate():
             self._integrations[platform] = [*self._integrations[platform], service_name]
             self.save_integrations()
             return True
+
         return False
 
     def get_integrated_services(self, service_name: str) -> Dict[str, Service]:
